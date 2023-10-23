@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
     const savedUser = await newUser.save();
     res
       .status(200)
-      .json({ message: "User registered successfully", user: savedUser });
+      .json(savedUser);
   } catch (err) {
     res.status(500).json({ message: "Registration failed", error: err });
   }
@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {
 router.get("/list", async (req, res) => {
   try {
     let user = await User.find();
-    res.status(200).json({ message: "sucess", users: user });
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: "failed", error: err });
   }
@@ -80,7 +80,7 @@ router.get("/list", async (req, res) => {
 router.get("/single/:id", async (req, res) => {
   try {
     let user = await User.findById(req.params.id).select("-passwordHash");
-    res.status(200).json({ message: "sucess", users: user });
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: "failed", error: err });
   }
@@ -117,10 +117,7 @@ router.put("/update/:id", async (req, res) => {
 
     res
       .status(200)
-      .json({
-        message: "User profile updated successfully",
-        user: updatedUser,
-      });
+      .json(updatedUser);
   } catch (err) {
     res.status(500).json({ message: "Profile update failed", error: err });
   }
@@ -137,7 +134,7 @@ router.delete("/delete/:id",async (req, res) => {
     if(!deletedUser){
        return res.status(404).json({ message: 'User not found' });
     }
-    res.status(200).json({ message: 'User deleted successfully', user: deletedUser });
+    res.status(200).json(deletedUser);
 
   } catch (err) {
     return res.status(400).json({ message: 'User deletion failed', error: err });

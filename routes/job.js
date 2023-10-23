@@ -15,13 +15,15 @@ router.post("/create", async (req, res) => {
         {
       title: req.body.title,
       description: req.body.description,
-      requirements: req.body.requirements,
       companyId: req.user.userId,
       isFeatured: req.body.isFeatured,
+      jobType: req.body.jobType,
+      location: req.body.location,
+      nature: req.body.nature,
     }
     );
     newJob = await newJob.save();
-    return res.status(400).json({ message: "Job listing created successfully", job: newJob});
+    return res.status(200).json(newJob);
   } catch (err) {
     return res
       .status(400)
@@ -33,7 +35,7 @@ router.post("/create", async (req, res) => {
 router.get("/list", async (req, res) => {
   try {
     let jod = await Job.find();
-    return res.status(200).json({ message: "Job fetch successfully", jods: jod });
+    return res.status(200).json(jod);
   } catch (err) {
     return res.status(400).json({ message: "Failed to fetch jobs.", error: err });
   }
@@ -45,11 +47,12 @@ router.get("/my/list", async (req, res) => {
     const companyId = req.user.userId;
   try {
     let jod = await Job.find({ companyId });
-    return res.status(200).json({ message: "Job fetch successfully", jods: jod });
+    return res.status(200).json(jod);
   } catch (err) {
     return res.status(400).json({ message: "Failed to fetch jobs.", error: err });
   }
 });
+
 
 // GET - Get details of a specific job
 router.get("/single/:id", async (req, res) => {
@@ -59,7 +62,7 @@ router.get("/single/:id", async (req, res) => {
     if (!job) {
       return res.status(404).json({ message: "Job not found.'" });
     }
-    return res.status(200).json({ message: "Job found successfully", job: job });
+    return res.status(200).json(job);
   } catch (err) {
     return res.status(400).json({ message: "Failed to fetch job", error: err });
   }
@@ -72,6 +75,7 @@ router.put("/update/:id", async (req, res) => {
     const updateJob = await Job.findByIdAndUpdate(jobId, {
         title: req.body.title,
         description: req.body.description,
+        applications: req.body.applications,
         requirements: req.body.requirements,
         companyId: req.user.userId,
         isFeatured: req.body.isFeatured,
@@ -81,7 +85,7 @@ router.put("/update/:id", async (req, res) => {
     }
     return res
       .status(400)
-      .json({ message: "Job updated successfully", updateJob: updateJob });
+      .json( updateJob );
   } catch (error) {
     return res
       .status(400)
@@ -96,10 +100,20 @@ router.delete("/delete/:id", async (req, res) => {
     if (!deleteJob) {
       return res.status(400).json({ message: "Job not found." });
     }
-    return res.status(400).json({ message: "Job listing deleted" });
+    return res.status(200).json({ message: "Job deleted" });
   } catch (err) {
     return res.status(400).json({ message: "Failed to delete job.", error: err });
   }
 });
+
+
+// router.get('/get/featured/:count', async (req,res) =>{
+//   const count = req.params.count ? req.params.count : 0 //const age_group = age < 18 ? "Child" : "Adult";
+//   const productfeatured = await Product.find({isFeatured: true}).limit(+count)
+//   if(!productfeatured){
+//       res.status(500).json({sucess: false})
+//   }
+//   res.send(productfeatured);
+// })
 
 module.exports = router;

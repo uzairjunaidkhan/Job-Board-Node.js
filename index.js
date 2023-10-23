@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-// const cors = require("cors");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const morgan = require("morgan")
@@ -25,7 +25,7 @@ mongoose
   });
   
 //middleware
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(authJwt());

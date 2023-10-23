@@ -37,7 +37,8 @@ function authJwt() {
         { url: /\/api\/job\/update(.*)/, methods: ["PUT"] },
         { url: /\/api\/job\/delete(.*)/, methods: ["DELETE"] },
 
-        { url: /\/api\/application\/list/, methods: ["GET"] },
+        // { url: /\/api\/application\/list/, methods: ["GET"] },
+        { url: /\/api\/application\/emp\/list(.*)/, methods: ["GET"] },
         { url: /\/api\/application\/single(.*)/, methods: ["GET"] },
         { url: /\/api\/application\/update(.*)/, methods: ["PUT"] },
         // { url: /\/api\/application\/delete(.*)/, methods: ["DELETE"] },
@@ -66,7 +67,8 @@ function authJwt() {
 
     if (
       (req.url === "/api/user/login" && req.method === "POST") ||
-      (req.url === "/api/user/register" && req.method === "POST")
+      (req.url === "/api/user/register" && req.method === "POST") ||
+      (req.url === "/api/job/list" && req.method === "GET")
     ) {
       return next();
     }
